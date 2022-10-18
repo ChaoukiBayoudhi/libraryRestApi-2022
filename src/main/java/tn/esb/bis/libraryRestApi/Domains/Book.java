@@ -35,4 +35,10 @@ public class Book {
     private byte[] coverImage;
     private String summary;
 
+    //Relation entre Book et Writer (*-1)
+    @ManyToOne
+    @JoinColumn(name = "writer_id",referencedColumnName = "id")
+    private Writer bookWriter;
+
+
 }

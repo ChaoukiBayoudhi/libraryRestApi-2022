@@ -42,4 +42,10 @@ public class Member {
     @Lob
     private byte[] photo;
 
+    //Relation entre Member et Address (1-1)
+    @OneToOne
+    @JoinColumn(name = "address_id",referencedColumnName = "id")
+    //"la ligne précedente est equivalente en SQL à "address_id foreign key referenced address(id)"
+    private Address memberAddress;
+
 }

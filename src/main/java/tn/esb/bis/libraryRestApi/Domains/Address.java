@@ -2,10 +2,7 @@ package tn.esb.bis.libraryRestApi.Domains;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -29,4 +26,9 @@ public class Address {
     @NonNull
     @EqualsAndHashCode.Include
     private int postalCode;
+
+    //Relation entre Address et Member (1-1)
+    @OneToOne(mappedBy = "memberAddress")
+    //mappedBy : mentionne que les deux attributs member et memberAddress proviennent de la meme relation (1-1)
+    private Member member;
 }
