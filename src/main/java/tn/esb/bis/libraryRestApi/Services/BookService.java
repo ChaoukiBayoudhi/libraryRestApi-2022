@@ -35,4 +35,22 @@ public class BookService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There is no book with code = " +isbnCode);
         return ResponseEntity.status(HttpStatus.OK).body(res.get());
     }
+
+    public ResponseEntity<?> addBook(Book b1) {
+        //verifier s'il exite un livre ayant le même isbnCode qui a été dejà ajouté
+        //sinon existe-il un livre ayant le même titre et le même auteur.
+        List<Book> lstBooks=repository.findAll();
+        int i=0;
+        boolean find=false;
+        while (i<lstBooks.size()&&!find) {
+            if(lstBooks.get(i).getIsbnCode().equalsIgnoreCase(b1.getIsbnCode()))
+                find=true;
+            i++;
+        }
+        if(find)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A book with same isbnCode exists");
+        //chercher par titre et auteur
+
+       return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(b1));
+    }
 }
