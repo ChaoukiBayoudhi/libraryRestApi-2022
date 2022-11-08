@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,5 +28,9 @@ public class Writer {
     private String biography;
     @Lob
     private byte[] photo;
+
+    //Relation entre Writer et Book (1-*)
+    @OneToMany(mappedBy ="bookWriter")
+    private Set<Book> books=new HashSet<Book>();
 
 }
