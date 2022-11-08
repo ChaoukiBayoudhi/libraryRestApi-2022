@@ -24,7 +24,7 @@ public class Book {
     private String isbnCode;
     @NonNull
     private String title;
-    @Column(scale = 7,precision=3)//le prix est sur 7 chiffres et 3 chiffres decimals
+    @Column(scale = 3,precision=7)//le prix est sur 7 chiffres et 3 chiffres decimals
     @NonNull
     private BigDecimal price;
     @NonNull
