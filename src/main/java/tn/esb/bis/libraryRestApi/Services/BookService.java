@@ -53,4 +53,33 @@ public class BookService {
 
        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(b1));
     }
+    public ResponseEntity<?> deleteBook(String isbnCode)
+    {
+        Optional<Book> res=repository.findById(isbnCode);
+        if(res.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There is no book with code = " +isbnCode);
+        repository.deleteById(isbnCode);
+        return ResponseEntity.accepted().build();
+        //or
+        //return ResponseEntity.status(HttpStatus.ACCEPTED).body("The book witg code = "+isbnCode +"has been successfully deleted");
+
+    }
+    public ResponseEntity<?> updateBook(String isbnCode,Book newBook)
+    {
+        Optional<Book> res=repository.findById(isbnCode);
+        if(res.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There is no book with code = " +isbnCode);
+        //recupere le livre from th Optional collection
+        Book b1=res.get();
+        //mettre à jour les attributs du livre
+        b1.setIsbnCode(isbnCode);
+        b1.setTitle(newBook.getTitle());
+        b1.setPrice(newBook.getPrice());
+        b1.setSummary(newBook.getSummary());
+        b1.setReleaseDate(newBook.getReleaseDate());
+        b1.setNbCopies(newBook.getNbCopies());
+        //sauvegarder les modifications
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.save(b1));
+
+    }
 }
