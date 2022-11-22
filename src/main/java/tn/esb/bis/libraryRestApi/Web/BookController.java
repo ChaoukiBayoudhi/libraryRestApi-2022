@@ -25,10 +25,12 @@ public class BookController {
     //delete => se fait via la méthode DELETE de Http                                                       @DeleteMapping("url")
     //update => se fait via la méthode UPDATE de Http (si on veut modifier tous les attributs(Totale))      @UpdateMapping("url")
     //update => se fait via la méthode PATCH de Http (si on veut modifier quelques attributs(Partielle))    @PatchMapping("url")
+    //url=http://localhost:8080/books/all
     @GetMapping("/all")
     public ResponseEntity<?> getBooks() {
         return service.getAllBooks();
     }
+    //url=http://localhost:8080/books/book/123esb-22
     @GetMapping("/book/{isbnCode}")
     public ResponseEntity<?> getBook(@PathVariable String isbnCode) {
         return service.getOneBook(isbnCode);
