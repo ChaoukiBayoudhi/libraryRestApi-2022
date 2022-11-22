@@ -1,6 +1,7 @@
 package tn.esb.bis.libraryRestApi.Domains;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class Book {
     @NonNull
     private BigDecimal price;
     @NonNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
     @NonNull
     private int nbCopies;

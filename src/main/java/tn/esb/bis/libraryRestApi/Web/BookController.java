@@ -15,6 +15,7 @@ import java.util.List;
  //-->La verifier
 //-->si la requête est valide alors la transférer au Service
 //-->sinon la rejeter
+@RequestMapping("/books")
 public class BookController {
     @Autowired
     private BookService service;

@@ -1,5 +1,6 @@
 package tn.esb.bis.libraryRestApi.Domains;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import tn.esb.bis.libraryRestApi.Enumerations.MemberType;
 
@@ -34,6 +35,7 @@ public class Member {
     @NonNull
     @EqualsAndHashCode.Include
     private String email;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String phoneNumber;
     @NonNull

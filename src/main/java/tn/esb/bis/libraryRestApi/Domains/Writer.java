@@ -1,5 +1,6 @@
 package tn.esb.bis.libraryRestApi.Domains;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Writer {
     @NonNull
     private String familyName;
     @NonNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String nationality;
     private String biography;
