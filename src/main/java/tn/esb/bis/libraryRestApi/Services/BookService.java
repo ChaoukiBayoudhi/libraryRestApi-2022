@@ -5,16 +5,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tn.esb.bis.libraryRestApi.Domains.Book;
+import tn.esb.bis.libraryRestApi.Domains.Writer;
 import tn.esb.bis.libraryRestApi.Repositories.BookRepository;
+import tn.esb.bis.libraryRestApi.Repositories.WriterRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 //Dans un service, on implemente la logique metier
 public class BookService {
     @Autowired
     private BookRepository repository;
+    @Autowired
+    private WriterRepository writerRepository;
 
     //ResponseEntity c'est un objet contenant une entête (header) et un corps (body)
     //header contient des informations comme contentType (json/xml/text,...), status( un code HTTP)
@@ -35,7 +41,7 @@ public class BookService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There is no book with code = " +isbnCode);
         return ResponseEntity.status(HttpStatus.OK).body(res.get());
     }
-
+    //1ère méthode:
     public ResponseEntity<?> addBook(Book b1) {
         //verifier s'il exite un livre ayant le même isbnCode qui a été dejà ajouté
         //sinon existe-il un livre ayant le même titre et le même auteur.
@@ -48,7 +54,7 @@ public class BookService {
             i++;
         }
         if(find)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A book with same isbnCode exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A book with same isbnCode exists.");
         //chercher par titre et auteur
 
        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(b1));
@@ -80,6 +86,28 @@ public class BookService {
         b1.setNbCopies(newBook.getNbCopies());
         //sauvegarder les modifications
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(repository.save(b1));
+
+    }
+    //si l'ecrivain du livre exists alors juste on le lie au livre
+    //sinon on ajoute l'ecrivain à la liste des ecrivains et puis on effectue le lien entre les deux entités.
+    public ResponseEntity<?> addWriter(String isbnCode, Writer writer) {
+        Optional<Book> res=repository.findById(isbnCode);
+        if(res.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There is no book with code = " +isbnCode);
+        //Le livre existe
+        //verifier si l'ecrivain existe déjà dans la BD.
+        List<Writer> lstWriters=writerRepository.findAll();
+        Set<Writer> writerSet=lstWriters.stream()  //conversion de List vers Stream
+                .filter(w->w.getName().equalsIgnoreCase(writer.getName())&&w.getFamilyName().equalsIgnoreCase(writer.getFamilyName()))
+                .filter(w->w.getBirthDate().equals(writer.getBirthDate()))
+                .collect(Collectors.toSet()); //conversion de Stream vers List
+        if (writerSet.isEmpty()) { //ajouter l'ecrivain à la BD pour garder une BD coherente
+            writerRepository.save(writer);
+        }
+        Book book=res.get();
+        book.setBookWriter(writer);
+        repository.save(book);
+        return ResponseEntity.accepted().build();
 
     }
 }

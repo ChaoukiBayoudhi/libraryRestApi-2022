@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esb.bis.libraryRestApi.Domains.Book;
+import tn.esb.bis.libraryRestApi.Domains.Writer;
 import tn.esb.bis.libraryRestApi.Services.BookService;
 
 import javax.validation.Valid;
@@ -51,5 +52,10 @@ public class BookController {
     @PutMapping("/update/{isbnCode}")
     public ResponseEntity<?> updateBook(@PathVariable String isbnCode,@Valid @RequestBody Book newBook) {
         return service.updateBook(isbnCode,newBook);
+    }
+    @PostMapping("book-writer/{isbnCode}")
+    public ResponseEntity<?> addBookWriter(@PathVariable String isbnCode, @Valid @RequestBody Writer writer)
+    {
+        return service.addWriter(isbnCode,writer);
     }
 }
