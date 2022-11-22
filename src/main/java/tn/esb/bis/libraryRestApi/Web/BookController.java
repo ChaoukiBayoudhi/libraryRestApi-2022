@@ -9,6 +9,9 @@ import tn.esb.bis.libraryRestApi.Services.BookService;
 import javax.validation.Valid;
 import java.util.List;
 
+//@CrossOrigin(origins = "*")//securité contre la vulnerabilité cors :Cross Origin ressouce sharing
+                            //tous les clients peuvent communiquer avec BookController
+@CrossOrigin(origins = "http://localhost:4200")//autoriser uniquement le client communiquant à travers le port 4200
 @RestController
 //Le rôle d'un controleur selon le design ECB : Entity Controller Boundary :
  //-->recupere la requête du client
